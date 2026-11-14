@@ -1,42 +1,52 @@
-# sv
+# AgWeather website
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+This is the code to build the MSU AgWeather website for Dr. Jeff Andresen. 
 
-## Creating a project
+## Quick start
 
-If you're seeing this, you've probably already done this step. Congrats!
+This is a javascript site, using [Svelte.js](https://svelte.dev/) that can build a mostly static website.  This source code can be built before deployment. 
+
+ We use [`pnpm`](https://pnpm.io/) instead of npm to manage this node package, but `npm` should work ok.  project has a 'lockfile' describing which 
+
+1. install things `pnpm i --frozen-lockfile`
+    - if you are developing and need update package, just use `pnpm -i` but check the lock file into git
+2. start a local dev server and view on your browser `pnpm run dev --open`
+
+
+
+This project was started with the Svelte `sv` utility as follows:
 
 ```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
+# recreate the skeleton basis for this project
 pnpm dlx sv@0.15.3 create --template minimal --types ts --add eslint vitest="usages:unit" playwright tailwindcss="plugins:typography" sveltekit-adapter="adapter:static" --install pnpm agweather
 ```
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Getting stated
+1. install pnpm and node if necessary.  This was developed with node v22.x
+2. `pnpm install` to install dependencies, or `pnpm i --frozen-lockfile` to 
+    keep current versions
 
-```sh
-npm run dev
+### Dev
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+3. `pnpm run dev` start web server to test
+4. edit pages 
 
-## Building
 
-To create a production version of your app:
+### Testing
+5. TBD will require writing tests to ensure all pages build
+   - uses [`playwright` ](https://playwright.dev/)
+   TODO:  add accessibility, see https://playwright.dev/docs/accessibility-testing 
 
-```sh
-npm run build
-```
+### Building 
 
-You can preview the production build with `npm run preview`.
+6. `npm run build` to create a site in the 'build' folder
+7. You can preview the production build with `npm run preview` (which may be different then the dev server above)
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+### Deployment
+
+TBD
+
+
+
