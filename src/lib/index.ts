@@ -24,32 +24,37 @@ export function initMobileNav() {
   
   toggleButtons.forEach(btn => {
     const targetId = btn.getAttribute('aria-controls') || btn.getAttribute('data-target');
-    const targetNav = document.getElementById(targetId);
-    if (!targetNav) return;
+    if (targetId) {
+        const targetNav = document.getElementById(targetId);
+        if (!targetNav) return;
 
-    btn.addEventListener('click', () => {
-      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!isExpanded));
-      targetNav.classList.toggle('hidden');
+        btn.addEventListener('click', () => {
+        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!isExpanded));
+        targetNav.classList.toggle('hidden');
 
-      // Update mobile menu icon state if exists
-      const iconOpen = btn.querySelector('.nav-icon-open');
-      const iconClose = btn.querySelector('.nav-icon-close');
-      if (iconOpen && iconClose) {
-        iconOpen.classList.toggle('hidden', !isExpanded);
-        iconClose.classList.toggle('hidden', isExpanded);
-      }
-    });
+        // Update mobile menu icon state if exists
+        const iconOpen = btn.querySelector('.nav-icon-open');
+        const iconClose = btn.querySelector('.nav-icon-close');
+        if (iconOpen && iconClose) {
+            iconOpen.classList.toggle('hidden', !isExpanded);
+            iconClose.classList.toggle('hidden', isExpanded);
+        }
+        });
 
-    // Close when ESC is pressed while inside menu or button
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
-        btn.setAttribute('aria-expanded', 'false');
-        targetNav.classList.add('hidden');
-        btn.focus();
-      }
-    });
+        // Close when ESC is pressed while inside menu or button
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+                btn.setAttribute('aria-expanded', 'false');
+                targetNav.classList.add('hidden');
+                (btn as HTMLElement)?.focus();
+            }
+        });
+    }
+
+    
   });
+
 }
 
 /**
@@ -69,8 +74,10 @@ export function initAccessibleTabs() {
           t.classList.remove('tab-active', 'border-b-4', 'border-primary', 'font-bold', 'text-primary');
           t.classList.add('text-slate-600');
           const panelId = t.getAttribute('aria-controls');
-          const panel = document.getElementById(panelId);
-          if (panel) panel.classList.add('hidden');
+          if (panelId) {
+            const panel = document.getElementById(panelId);
+            if (panel) panel.classList.add('hidden');
+          }
         });
 
         // Activate clicked tab
@@ -78,26 +85,39 @@ export function initAccessibleTabs() {
         tab.classList.add('tab-active', 'border-b-4', 'border-primary', 'font-bold', 'text-primary');
         tab.classList.remove('text-slate-600');
         const activePanelId = tab.getAttribute('aria-controls');
-        const activePanel = document.getElementById(activePanelId);
-        if (activePanel) activePanel.classList.remove('hidden');
+
+        if (activePanelId) { 
+            const activePanel = document.getElementById(activePanelId);
+            if (activePanel) activePanel.classList.remove('hidden');
+        } 
+        
       });
 
-      // Keyboard arrow navigation between tabs
-      tab.addEventListener('keydown', (e) => {
-        let newTab = null;
-        const tabArray = Array.from(tabs);
-        const index = tabArray.indexOf(tab);
-
-        if (e.key === 'ArrowRight') {
-          newTab = tabArray[(index + 1) % tabArray.length];
-        } else if (e.key === 'ArrowLeft') {
-          newTab = tabArray[(index - 1 + tabArray.length) % tabArray.length];
+      document.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+        // Handle Escape key press
+        console.log('Escape key pressed');
         }
+      });
+      
+      // Keyboard arrow navigation between tabs
+      tab.addEventListener('keydown', (e: Event) => {
+        if(e instanceof KeyboardEvent) {
+            let newTab = null;
+            const tabArray = Array.from(tabs);
+            const index = tabArray.indexOf(tab);
 
-        if (newTab) {
-          e.preventDefault();
-          newTab.focus();
-          newTab.click();
+            if (e.key === 'ArrowRight') {
+            newTab = tabArray[(index + 1) % tabArray.length];
+            } else if (e.key === 'ArrowLeft') {
+            newTab = tabArray[(index - 1 + tabArray.length) % tabArray.length];
+            }
+
+            if (newTab) {
+                e.preventDefault();
+                (newTab as HTMLElement)?.focus();
+                (newTab as HTMLElement)?.click();
+            }
         }
       });
     });
@@ -113,11 +133,14 @@ export function initModals() {
   document.querySelectorAll('[data-open-modal]').forEach(trigger => {
     trigger.addEventListener('click', () => {
       const modalId = trigger.getAttribute('data-open-modal');
-      const dialog = document.getElementById(modalId);
-      if (dialog && typeof dialog.showModal === 'function') {
-        dialog.showModal();
+      if(modalId) {
+        const dialog = document.getElementById(modalId);
+        if (dialog && dialog instanceof HTMLDialogElement && typeof dialog.showModal === 'function') {
+            dialog.showModal();
+        }
       }
     });
+
   });
 
   // Modal close triggers
@@ -138,8 +161,11 @@ export function initCopyButtons() {
   document.querySelectorAll('[data-copy-target]').forEach(button => {
     button.addEventListener('click', () => {
       const targetId = button.getAttribute('data-copy-target');
-      const targetEl = document.getElementById(targetId);
-      if (!targetEl) return;
+      if (!targetId) return;
+
+      const targetEl = document.getElementById(targetId) as HTMLInputElement;
+      // make sure it's there and is an input
+      if ( !targetEl || (targetEl.tagName  != "input")) return;
 
       const textToCopy = targetEl.value || targetEl.textContent || '';
       navigator.clipboard.writeText(textToCopy).then(() => {
@@ -159,6 +185,7 @@ export function initCopyButtons() {
       }).catch(err => {
         console.error('Copy failed:', err);
       });
+      
     });
   });
 }
@@ -173,7 +200,7 @@ export function initPublicationFilters() {
 
   filterButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      const filter = btn.getAttribute('data-pub-filter');
+      const filter:string = btn.getAttribute('data-pub-filter') || ''; // empyt string for null
 
       // Update button active states
       filterButtons.forEach(b => {
@@ -201,7 +228,7 @@ export function initPublicationFilters() {
 /**
  * Screen Reader Live Announcer helper
  */
-export function announceToScreenReader(message) {
+export function announceToScreenReader(message: string) {
   let announcer = document.getElementById('sr-announcer');
   if (!announcer) {
     announcer = document.createElement('div');
