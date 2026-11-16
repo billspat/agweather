@@ -14,8 +14,7 @@
         </h1>
 
         <p class="text-slate-200 text-base sm:text-lg max-w-3xl leading-relaxed">
-          Jeff provides weather summaries and data across MSU and the State.  
-          We work closely with other weather-providing agencies.  See the following links, videos and articles 
+          ...&nbsp;
         </p>
       </div>
 
