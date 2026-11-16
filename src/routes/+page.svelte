@@ -71,7 +71,7 @@
             Dr. Andresen presents weather facts and trends during the growing season. 
             </p>
             <div class="card-actions justify-end mt-4">
-            <a href="weather-guidance.html" class="text-xs font-bold text-msu-green hover:underline">Learn more &rarr;</a>
+            <a href="weather" class="text-xs font-bold text-msu-green hover:underline">Learn more &rarr;</a>
             </div>
         </div>
         </div>
@@ -87,7 +87,7 @@
             Michiagn CAFO siting.</p>
             <p><em>MIOFFSet is currently offline for major rennovations (Fall 2026)</em></p>
             <div class="card-actions justify-end mt-4">
-            <a href="#" class="text-xs font-bold text-msu-green hover:underline">MIOFFSet Website &rarr;</a>               
+            <a href="https://mioffset-2026-front-end.vercel.app" class="text-xs font-bold text-msu-green hover:underline">MIOFFSet Website &rarr;</a>               
             </div>
         </div>
         </div>
