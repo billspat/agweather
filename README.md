@@ -48,6 +48,8 @@ pnpm dlx sv@0.15.3 create --template minimal --types ts --add eslint vitest="usa
 ```
 
 
+### More!
 
+See also the [notes](notes) folder in this repo for more hints on about how to develop
 
 
