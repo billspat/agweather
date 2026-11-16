@@ -1,10 +1,9 @@
-<script>
-    	import Nav from "$lib/components/Nav.svelte";
-        let {pageTitle} = $props();
+<script lang="ts">
+	import Nav from "$lib/components/Nav.svelte";
+	let { pageTitle = 'Agricultural Weather Office' }: { pageTitle?: string } = $props();
 </script>
 
-
-<header role="banner" class="w-full">
+<header class="w-full">
 	<!-- HEADER: Tier 1 - MSU Masthead (Institutional Brand Bar)                   -->
 	<div class="msu-masthead w-full px-4 sm:px-8 py-2.5 sm:py-3 border-b-2 border-msu-dark">
 	<div class="max-w-7xl mx-auto w-full flex items-center justify-between">
@@ -75,7 +74,7 @@
 					<span><a href="https://geo.msu.edu">Department of Geography, Environment and Spatial Sciences</a></span><span class="mx-1.5 text-slate-300" aria-hidden="true">/</span><span>College of Social Science</span>
 				</div>
 				<h1>
-					<a href="index.html" class="text-lg sm:text-2xl font-extrabold text-msu-dark hover:text-msu-green transition-colors block truncate">
+					<a href="/" class="text-lg sm:text-2xl font-extrabold text-msu-dark hover:text-msu-green transition-colors block truncate">
 					{pageTitle}
 					</a>
 				</h1>

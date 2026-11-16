@@ -1,3 +1,6 @@
 export function load() {
-	return { title: 'Articles' };
+	return {
+		title: 'Articles & News',
+		pageTitle: 'Agricultural Weather Office'
+	};
 }

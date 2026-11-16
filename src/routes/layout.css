@@ -4589,11 +4589,7 @@ details.collapse summary::-webkit-details-marker {
     scroll-behavior: auto !important;
   }
 }
-.checked\:bg-msu-green:checkedheader :focus-visible {
-  outline: 3px solid #fff !important;
-  outline-offset: 2px !important;
-}
-.hover\:bg-msu-green:hoverheader :focus-visible {
+header :focus-visible {
   outline: 3px solid #fff !important;
   outline-offset: 2px !important;
 }
