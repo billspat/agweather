@@ -1,8 +1,15 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
+	import { jsonToCsv, downloadCsv } from '$lib/csv';
 
 	let { data }: { data: PageData } = $props();
+
+	function handleDownloadCsv() {
+		if (!data.forecast) return;
+		const csv = jsonToCsv(data.forecast.forecasts);
+		downloadCsv(`${data.forecast.station}-forecast.csv`, csv);
+	}
 
 	// Group stations by region for accessible and clean <optgroup> selection
 	let stationsByRegion = $derived.by(() => {
@@ -168,7 +175,7 @@
 					</div>
 				</div>
 
-				<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+				<!-- <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
 					<div class="text-xs font-bold uppercase tracking-wider text-slate-500">60h Temp Range</div>
 					<div class="text-lg font-extrabold text-msu-dark mt-1">
 						{#if summaryStats && summaryStats.minTemp !== null && summaryStats.maxTemp !== null}
@@ -180,15 +187,15 @@
 						{/if}
 					</div>
 					<div class="text-xs text-slate-500 mt-0.5">Min / Max across period</div>
-				</div>
+				</div> -->
 
-				<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+				<!-- <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
 					<div class="text-xs font-bold uppercase tracking-wider text-slate-500">Max Precip Probability</div>
 					<div class="text-lg font-extrabold text-msu-dark mt-1">
 						{summaryStats?.maxPrecipProb !== null ? `${Math.round(summaryStats?.maxPrecipProb ?? 0)}%` : '0%'}
 					</div>
 					<div class="text-xs text-slate-500 mt-0.5">Highest 6h chance of rain</div>
-				</div>
+				</div> -->
 
 				<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
 					<div class="text-xs font-bold uppercase tracking-wider text-slate-500">Model Run Time</div>
@@ -197,6 +204,40 @@
 					</div>
 					<div class="text-[11px] text-slate-500 mt-0.5">Source: NBM / MAWN Server</div>
 				</div>
+
+				<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+					<div class="text-xs font-bold uppercase tracking-wider text-slate-500">Legacy</div>
+					<div class="text-xs font-semibold text-slate-800 mt-1">
+						<a
+							href="https://mawn.geo.msu.edu/rawdata/legacy/fcsts/nbmnbs/data/fous16{data.currentStation.code}"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="btn btn-xs bg-emerald-800 text-white hover:bg-msu-green hover:text-emerald-200"
+							title="View legacy text-only, viewable version of 60 forecast for {data.currentStation.code} (not Accessible)"
+						>
+							Formatted plain-text report &rarr;
+						</a>
+					</div>
+					<div class="text-[11px] text-slate-500 mt-0.5">MAWN Server</div>
+				</div>
+
+				<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+					<div class="text-xs font-bold uppercase tracking-wider text-slate-500">API</div>
+					<div class="text-xs font-semibold text-slate-800 mt-1">
+						<a
+							href={`/api/forecasts/${data.currentStation.code}`}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="btn btn-xs bg-emerald-800 text-white hover:bg-msu-green hover:text-emerald-200"
+							title="View raw JSON data returned from our server proxy"
+						>
+							View Data file (JSON format)  &rarr;
+						</a>
+					</div>
+					<div class="text-[11px] text-slate-500 mt-0.5">MAWN Server</div>
+				</div>
+
+
 			</div>
 
 			<!-- ACCESSIBLE FORECAST TABLE -->
@@ -210,16 +251,18 @@
 							All times Michigan local (ET). Values derived from NBM model output.
 						</p>
 					</div>
-					<div class="flex items-center gap-2">
-						<a
-							href={`/api/forecasts/${data.currentStation.code}`}
-							target="_blank"
-							rel="noopener noreferrer"
+
+					<div class="flex items-center gap-2 sm:ml-auto">
+					<div id="show_csv_download_button" class="flex items-center gap-2">
+						<button
+							type="button"
+							onclick={handleDownloadCsv}
 							class="btn btn-xs btn-outline border-msu-green text-msu-green hover:bg-msu-green hover:text-white"
-							title="View raw JSON data returned from our server proxy"
+							title="Download this forecast table as a CSV file"
 						>
-							View JSON API &rarr;
-						</a>
+							Download CSV &rarr;
+						</button>
+					</div>
 					</div>
 				</div>
 
