@@ -16,7 +16,8 @@
 					class="w-full h-auto object-cover"
 				/>
 			</div>
-			<div class="flex flex-wrap gap-4">
+			<!-- disable these redunant buttons - already in the nav -->
+			<!-- <div class="flex flex-wrap gap-4">
 				<a
 					href="/forecasts"
 					class="btn bg-white text-msu-green hover:bg-emerald-50 hover:text-msu-dark font-bold border-none px-6 shadow"
@@ -29,7 +30,7 @@
 				>
 					Weather Guidance
 				</a>
-			</div>
+			</div> -->
 		</div>
 
 		<!-- Quick Info Panel -->
