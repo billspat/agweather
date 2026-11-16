@@ -20,9 +20,6 @@ import photo from '$lib/assets/andresen-jeffrey-profile-from-geo.jpg';
             <div class="md:col-span-3 flex justify-center">
               <div class="w-36 h-36 sm:w-44 sm:h-44   bg-msu-dark p-1 flex items-center justify-center overflow-hidden"> <!-- bg-slate-100 border-4 border-msu-green ounded-full -->
                 <img src="{photo}" alt="Photo of Dr. Jeff Andresen, MSU"  />
-                <!-- <svg class="w-full h-full text-slate-400" fill="currentColor" viewBox="0 0 24 24" aria-label="Photo of Dr. Jeff Andresen, MSU">
-                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg> -->
               </div>
             </div>
 
@@ -32,6 +29,13 @@ import photo from '$lib/assets/andresen-jeffrey-profile-from-geo.jpg';
                 <p class="text-sm font-semibold text-emerald-800">Professor, Department of Geography, Environment, and Spatial Sciences</p>
                 <p class="text-xs text-slate-500">Geography Bldg rm 236A, 673 Auditorium Road,  East Lansing, MI 48824</p>
               </div>
+
+              <p class="text-sm text-slate-600 leading-relaxed">
+              The primary focus of Andresen’s research has been the influence of weather and climate on agriculture, both in the USA and in international production areas. 
+              Current and past themes include climatological trends and potential impacts, crop simulation modeling, agricultural irrigation, 
+              impacts associated with potential future changes in climate, weather and risk management,
+              and the influence of land use changes on regional climate.
+              </p>
 
               <div class="pt-2 flex flex-wrap items-center gap-3">
                 <a href="mailto:andresen@msu.edu" class="btn btn-sm btn-outline border-slate-300 text-slate-700 hover:bg-slate-100">
