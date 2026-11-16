@@ -154,7 +154,7 @@
 					</g>
 				</svg>
 			</a>
-			<address class="not-italic text-xs sm:text-sm text-slate-300 space-y-1">
+			<address class="not-italic text-xs sm:text-sm text-slate-700 space-y-1">
 				<p class="font-semibold text-white">Michigan Climatological Resources Program</p>
 				<p>Geography Building</p>
 				<p>673 Auditorium Road, Room 236</p>
@@ -170,7 +170,7 @@
 
 		<div>
 			<h3 class="text-sm font-bold uppercase tracking-wider text-white mb-3 font-sans">Site Navigation</h3>
-			<ul class="text-xs sm:text-sm space-y-2 text-slate-300">
+			<ul class="text-xs sm:text-sm space-y-2 text-slate-700">
 				<li><a href="/" class="hover:text-emerald-300 underline-offset-4 hover:underline">Home</a></li>
 				<li><a href="/andresen" class="hover:text-emerald-300 underline-offset-4 hover:underline">Dr. Jeff Andresen</a></li>
 				<li><a href="/forecasts" class="hover:text-emerald-300 underline-offset-4 hover:underline">Forecast Reports</a></li>
@@ -182,7 +182,7 @@
 
 		<div>
 			<h3 class="text-sm font-bold uppercase tracking-wider text-white mb-3 font-sans">Institutional Links</h3>
-			<ul class="text-xs sm:text-sm space-y-2 text-slate-300">
+			<ul class="text-xs sm:text-sm space-y-2 text-slate-700">
 				<li>
 					<span>Call MSU: </span>
 					<a href="tel:5173551851" class="text-white font-bold hover:text-emerald-300">(517) 355-1851</a>

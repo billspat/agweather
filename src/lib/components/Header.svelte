@@ -71,7 +71,7 @@
 		<!-- Department Hierarchy & Site Title -->
 			<div class="min-w-0">
 				<div class="text-xs uppercase tracking-wider text-emerald-800 font-semibold mb-0.5 truncate">
-					<span><a href="https://geo.msu.edu">Department of Geography, Environment and Spatial Sciences</a></span><span class="mx-1.5 text-slate-300" aria-hidden="true">/</span><span>College of Social Science</span>
+					<span><a href="https://geo.msu.edu">Department of Geography, Environment and Spatial Sciences</a></span><span class="mx-1.5 text-slate-700" aria-hidden="true">/</span><span>College of Social Science</span>
 				</div>
 				<h1>
 					<a href="/" class="text-lg sm:text-2xl font-extrabold text-msu-dark hover:text-msu-green transition-colors block truncate">

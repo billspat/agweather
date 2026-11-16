@@ -356,7 +356,7 @@
 												{prob}%
 											</span>
 										{:else}
-											<span class="text-slate-300">—</span>
+											<span class="text-slate-700">—</span>
 										{/if}
 									</td>
 
@@ -369,7 +369,7 @@
 										{:else if entry.precipitation_amount_6h === 0}
 											<span class="text-slate-400">0.00"</span>
 										{:else}
-											<span class="text-slate-300">—</span>
+											<span class="text-slate-700">—</span>
 										{/if}
 									</td>
 
@@ -380,7 +380,7 @@
 												{Math.round(entry.thunderstorm_probability_6h)}%
 											</span>
 										{:else}
-											<span class="text-slate-300">—</span>
+											<span class="text-slate-700">—</span>
 										{/if}
 									</td>
 								</tr>
