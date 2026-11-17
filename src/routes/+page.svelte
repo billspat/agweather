@@ -16,21 +16,17 @@
 					class="w-full h-auto object-cover"
 				/>
 			</div>
-			<!-- disable these redunant buttons - already in the nav -->
+
+			<!-- disable these redunant buttons inside the hero element - already in the nav, but they are cute -->
 			<!-- <div class="flex flex-wrap gap-4">
-				<a
-					href="/forecasts"
-					class="btn bg-white text-msu-green hover:bg-emerald-50 hover:text-msu-dark font-bold border-none px-6 shadow"
-				>
+				<a href="/forecasts" class="btn bg-white text-msu-green hover:bg-emerald-50 hover:text-msu-dark font-bold border-none px-6 shadow">
 					Forecast Reports
 				</a>
-				<a
-					href="/weather"
-					class="btn btn-outline text-white hover:bg-white/10 border-white px-6 font-semibold"
-				>
+				<a href="/weather" class="btn btn-outline text-white hover:bg-white/10 border-white px-6 font-semibold">
 					Weather Guidance
 				</a>
 			</div> -->
+
 		</div>
 
 		<!-- Quick Info Panel -->
