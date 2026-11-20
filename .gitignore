@@ -12,8 +12,7 @@ node_modules
 .DS_Store
 Thumbs.db
 
-.vscode
-
+/.vscode
 # Env
 .env
 .env.*
