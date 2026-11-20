@@ -1,18 +1,21 @@
 <script lang="ts">
-	import heroImage from '$lib/assets/michigan_orchard_morning_by_jeannie_sanders.jpg';
+	import heroImage from '$lib/assets/mi_cherry_orchard_andresen.JPG';
+
 </script>
 
 <!-- HERO SECTION -->
 <section class="bg-msu-dark text-white py-16 sm:py-20 px-4 sm:px-8 border-b-4 border-emerald-600">
-	<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-		<div class="lg:col-span-8">
+	<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+		<div class="lg:col-span-12">
 			<h1 class="text-2xl sm:text-4xl font-extrabold text-white mb-6 leading-tight">
 				Helping Michigan's Grower Community Make Sense of the Weather
 			</h1>
+		</div>
+		<div class="lg:col-span-8">
 			<div class="mb-8 max-w-2xl overflow-hidden rounded-xl shadow-lg border border-emerald-800">
 				<img
 					src={heroImage}
-					alt="Michigan orchard in the morning, by Jeannie Sanders"
+					alt="Michigan Cherry Orchard by Jeff Andresen"
 					class="w-full h-auto object-cover"
 				/>
 			</div>
