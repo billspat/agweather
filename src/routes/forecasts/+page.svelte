@@ -1,14 +1,52 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import type { MawnForecastResponse } from '$lib/types/forecast';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { jsonToCsv, downloadCsv } from '$lib/csv';
 
 	let { data }: { data: PageData } = $props();
+	let forecast = $state<MawnForecastResponse | null>(null);
+	let fetchError = $state<string | null>(null);
+	let isLoading = $state(true);
+
+	$effect(() => {
+		const station = data.currentStation.code;
+		const controller = new AbortController();
+
+		forecast = null;
+		fetchError = null;
+		isLoading = true;
+
+		fetch(`${base}/api/forecast-proxy.php?station=${encodeURIComponent(station)}`, {
+			signal: controller.signal,
+			headers: { Accept: 'application/json' }
+		})
+			.then(async (response) => {
+				if (!response.ok) {
+					const detail = await response.text();
+					throw new Error(detail.trim() || `Forecast request failed with status ${response.status}.`);
+				}
+				return (await response.json()) as MawnForecastResponse;
+			})
+			.then((result) => {
+				forecast = result;
+			})
+			.catch((error: unknown) => {
+				if (error instanceof DOMException && error.name === 'AbortError') return;
+				fetchError = error instanceof Error ? error.message : 'Failed to retrieve forecast data.';
+			})
+			.finally(() => {
+				if (!controller.signal.aborted) isLoading = false;
+			});
+
+		return () => controller.abort();
+	});
 
 	function handleDownloadCsv() {
-		if (!data.forecast) return;
-		const csv = jsonToCsv(data.forecast.forecasts);
-		downloadCsv(`${data.forecast.station}-forecast.csv`, csv);
+		if (!forecast) return;
+		const csv = jsonToCsv(forecast.forecasts);
+		downloadCsv(`${forecast.station}-forecast.csv`, csv);
 	}
 
 	// Group stations by region for accessible and clean <optgroup> selection
@@ -25,7 +63,7 @@
 	function handleStationSelect(event: Event) {
 		const target = event.target as HTMLSelectElement;
 		const code = target.value;
-		goto(`/forecasts?station=${encodeURIComponent(code)}`, {
+		goto(`${base}/forecasts/?station=${encodeURIComponent(code)}`, {
 			keepFocus: true,
 			noScroll: true
 		});
@@ -71,17 +109,17 @@
 
 	// Calculate summary stats across the 60h period
 	let summaryStats = $derived.by(() => {
-		if (!data.forecast || !data.forecast.forecasts.length) return null;
-		const temps = data.forecast.forecasts
+		if (!forecast || !forecast.forecasts.length) return null;
+		const temps = forecast.forecasts
 			.map((f) => f.temperature)
 			.filter((t): t is number => t !== null);
 		const maxTemp = temps.length ? Math.max(...temps) : null;
 		const minTemp = temps.length ? Math.min(...temps) : null;
-		const precipProbs = data.forecast.forecasts
+		const precipProbs = forecast.forecasts
 			.map((f) => f.precipitation_probability_6h)
 			.filter((p): p is number => p !== null);
 		const maxPrecipProb = precipProbs.length ? Math.max(...precipProbs) : null;
-		const totalPrecip = data.forecast.forecasts.reduce((acc, f) => {
+		const totalPrecip = forecast.forecasts.reduce((acc, f) => {
 			return acc + (f.precipitation_amount_6h ?? 0);
 		}, 0);
 
@@ -139,21 +177,28 @@
 					</select>
 					<p class="text-[11px] text-emerald-300/80 mt-1.5">
 						Station: <span class="font-bold text-white uppercase">{data.currentStation.code}</span> •
-						Direct server-side data from MAWN
+						Data loaded through the site's PHP proxy
 					</p>
 				</div>
 			</div>
 		</div>
 
+		{#if isLoading}
+			<div class="alert bg-slate-50 border border-slate-200 shadow-sm" role="status" aria-live="polite">
+				<span class="loading loading-spinner text-emerald-800" aria-hidden="true"></span>
+				<span>Loading forecast data for {data.currentStation.name}…</span>
+			</div>
+		{/if}
+
 		<!-- ERROR ALERT -->
-		{#if data.fetchError}
+		{#if fetchError}
 			<div class="alert alert-error shadow-md border-l-4 border-red-700 text-left" role="alert">
 				<svg class="stroke-current shrink-0 h-6 w-6 text-red-700" fill="none" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
 				</svg>
 				<div>
 					<h2 class="font-bold">Unable to Load Forecast Data</h2>
-					<p class="text-sm">{data.fetchError}</p>
+					<p class="text-sm">{fetchError}</p>
 					<p class="text-xs text-slate-600 mt-1">
 						Please choose another station from the dropdown above, or verify network connectivity to the MAWN data server.
 					</p>
@@ -162,7 +207,7 @@
 		{/if}
 
 		<!-- FORECAST CONTENT -->
-		{#if data.forecast}
+		{#if forecast}
 			<!-- STATION METADATA & SUMMARY CARDS -->
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 				<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
@@ -171,7 +216,7 @@
 						{data.currentStation.name}
 					</div>
 					<div class="text-xs text-emerald-800 font-mono mt-0.5">
-						Code: {data.forecast.station}
+						Code: {forecast.station}
 					</div>
 				</div>
 
@@ -179,9 +224,9 @@
 					<div class="text-xs font-bold uppercase tracking-wider text-slate-500">60h Temp Range</div>
 					<div class="text-lg font-extrabold text-msu-dark mt-1">
 						{#if summaryStats && summaryStats.minTemp !== null && summaryStats.maxTemp !== null}
-							<span class="text-blue-700">{Math.round(summaryStats.minTemp)}°{data.forecast.units.temperature}</span>
+							<span class="text-blue-700">{Math.round(summaryStats.minTemp)}°{forecast.units.temperature}</span>
 							<span class="text-slate-400 font-normal mx-1">to</span>
-							<span class="text-emerald-800">{Math.round(summaryStats.maxTemp)}°{data.forecast.units.temperature}</span>
+							<span class="text-emerald-800">{Math.round(summaryStats.maxTemp)}°{forecast.units.temperature}</span>
 						{:else}
 							N/A
 						{/if}
@@ -200,7 +245,7 @@
 				<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
 					<div class="text-xs font-bold uppercase tracking-wider text-slate-500">Model Run Time</div>
 					<div class="text-xs font-semibold text-slate-800 mt-1">
-						{formatInitializedAt(data.forecast.initialized_at)}
+						{formatInitializedAt(forecast.initialized_at)}
 					</div>
 					<div class="text-[11px] text-slate-500 mt-0.5">Source: NBM / MAWN Server</div>
 				</div>
@@ -225,16 +270,16 @@
 					<div class="text-xs font-bold uppercase tracking-wider text-slate-500">API</div>
 					<div class="text-xs font-semibold text-slate-800 mt-1">
 						<a
-							href={`/api/forecasts/${data.currentStation.code}`}
+							href={`${base}/api/forecast-proxy.php?station=${data.currentStation.code}`}
 							target="_blank"
 							rel="noopener noreferrer"
 							class="btn btn-xs bg-emerald-800 text-white hover:bg-msu-green hover:text-emerald-200"
-							title="View raw JSON data returned from our server proxy"
+							title="View raw JSON data returned from the site's PHP proxy"
 						>
-							View Data file (JSON format)  &rarr;
+							View Data file (JSON format) &rarr;
 						</a>
 					</div>
-					<div class="text-[11px] text-slate-500 mt-0.5">MAWN Server</div>
+					<div class="text-[11px] text-slate-500 mt-0.5">PHP proxy / MAWN</div>
 				</div>
 
 
@@ -275,10 +320,10 @@
 						<thead class="bg-slate-100 text-slate-800 text-xs font-bold border-b border-slate-300">
 							<tr>
 								<th scope="col" class="py-3 px-3">Date / Time (ET)</th>
-								<th scope="col" class="py-3 px-2 text-right">Temp (°{data.forecast.units.temperature})</th>
-								<th scope="col" class="py-3 px-2 text-right">Dew Pt (°{data.forecast.units.temperature})</th>
+								<th scope="col" class="py-3 px-2 text-right">Temp (°{forecast.units.temperature})</th>
+								<th scope="col" class="py-3 px-2 text-right">Dew Pt (°{forecast.units.temperature})</th>
 								<th scope="col" class="py-3 px-2 text-right">RH (%)</th>
-								<th scope="col" class="py-3 px-3">Wind ({data.forecast.units.wind_speed})</th>
+								<th scope="col" class="py-3 px-3">Wind ({forecast.units.wind_speed})</th>
 								<th scope="col" class="py-3 px-3">Sky / Clouds</th>
 								<th scope="col" class="py-3 px-2 text-right">6h Precip Prob</th>
 								<th scope="col" class="py-3 px-2 text-right">6h Amount</th>
@@ -286,7 +331,7 @@
 							</tr>
 						</thead>
 						<tbody class="text-xs divide-y divide-slate-200 font-medium text-slate-700">
-							{#each data.forecast.forecasts as entry, idx (entry.valid_at || idx)}
+							{#each forecast.forecasts as entry, idx (entry.valid_at || idx)}
 								{@const { dateStr, timeStr } = formatDateTime(entry.valid_at)}
 								<tr class="hover:bg-emerald-50/60 transition-colors">
 									<!-- Valid Time -->
@@ -391,7 +436,7 @@
 
 				<div class="p-4 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex flex-wrap items-center justify-between gap-2">
 					<span>
-						Data points: {data.forecast.forecasts.length} interval periods (~60 hours total)
+						Data points: {forecast.forecasts.length} interval periods (~60 hours total)
 					</span>
 					<span>
 						Data server: <code class="font-mono bg-white px-1 py-0.5 border border-slate-200 rounded">https://mawn.geo.msu.edu/rawdata/legacy/fcsts/nbmnbs/data/</code>
@@ -407,7 +452,7 @@
 				These forecast data tables are powered by the National Weather Service's National Blend of Models (NBM/NBS), bias-corrected and localized for Michigan Automated Weather Network (MAWN) weather stations across Michigan.
 			</p>
 			<p>
-				Because MAWN servers restrict cross-origin browser requests (CORS), this application utilizes SvelteKit server-side functions (<code>+page.server.ts</code> and <code>/api/forecasts/[station]</code>) to securely fetch and format the raw forecast JSON from MAWN on the backend.
+				Because MAWN restricts cross-origin browser requests, this static site retrieves forecast JSON through the same-origin <code>api/forecast-proxy.php</code> script. The browser receives the result while no SvelteKit server is required after deployment.
 			</p>
 		</div>
 	</div>

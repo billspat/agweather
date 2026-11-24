@@ -1,3 +1,7 @@
+<script lang="ts">
+	import { base } from '$app/paths';
+</script>
+
 <!-- FOOTER: Institutional MSU Footer -->
 <footer class="msu-footer pt-12 pb-8 px-4 sm:px-8 mt-auto">
 	<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-emerald-900/60 justify-items-stretch">
@@ -171,11 +175,11 @@
 		<div>
 			<h3 class="text-sm font-bold uppercase tracking-wider text-white mb-3 font-sans">Site Navigation</h3>
 			<ul class="text-xs sm:text-sm space-y-2 text-slate-700">
-				<li><a href="/" class="hover:text-emerald-300 underline-offset-4 hover:underline">Home</a></li>
-				<li><a href="/andresen" class="hover:text-emerald-300 underline-offset-4 hover:underline">Dr. Jeff Andresen</a></li>
-				<li><a href="/forecasts" class="hover:text-emerald-300 underline-offset-4 hover:underline">Forecast Reports</a></li>
-				<li><a href="/weather" class="hover:text-emerald-300 underline-offset-4 hover:underline">Weather Resources</a></li>
-				<li><a href="/articles" class="hover:text-emerald-300 underline-offset-4 hover:underline">Articles & News</a></li>
+				<li><a href={`${base}/`} class="hover:text-emerald-300 underline-offset-4 hover:underline">Home</a></li>
+				<li><a href={`${base}/andresen/`} class="hover:text-emerald-300 underline-offset-4 hover:underline">Dr. Jeff Andresen</a></li>
+				<li><a href={`${base}/forecasts/`} class="hover:text-emerald-300 underline-offset-4 hover:underline">Forecast Reports</a></li>
+				<li><a href={`${base}/weather/`} class="hover:text-emerald-300 underline-offset-4 hover:underline">Weather Resources</a></li>
+				<li><a href={`${base}/articles/`} class="hover:text-emerald-300 underline-offset-4 hover:underline">Articles & News</a></li>
 				<li><a href="https://enviroweather.msu.edu" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-300 underline-offset-4 hover:underline">Enviroweather &rarr;</a></li>
 			</ul>
 		</div>

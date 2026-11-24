@@ -38,6 +38,23 @@ This is a javascript site, using [Svelte.js](https://svelte.dev/) that can build
 
 TBD
 
+## Static deployment
+
+This project builds as a fully static SvelteKit site. The only server-side runtime used by the deployed site is `static/api/forecast-proxy.php`, which is copied to `build/api/forecast-proxy.php`.
+
+1. Install dependencies with `pnpm install --frozen-lockfile`.
+2. Build with `pnpm run build`.
+3. Copy the complete contents of `build/` into a directory served by PHP-enabled Apache.
+4. Ensure Apache permits PHP execution and outbound HTTPS requests. The PHP proxy uses cURL to retrieve MAWN forecast data.
+
+For deployment at a web root, the default build is ready to copy. For a subdirectory such as `/agweather`, build with:
+
+```sh
+BASE_PATH=/agweather pnpm run build
+```
+
+The forecast page requests same-origin data from `api/forecast-proxy.php?station=klan`, so no CORS configuration is required between the browser and the PHP script. Static-only preview commands do not execute PHP; test the generated `build/` directory with a local Apache/PHP server when validating forecasts.
+
 ## Note
 
 This project was started with the Svelte `sv` utility as follows:

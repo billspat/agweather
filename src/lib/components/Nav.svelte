@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { base } from '$app/paths';
 
 	interface NavItem {
 		href: string;
@@ -8,17 +9,16 @@
 
 	const navItems: NavItem[] = [
 		{ href: '/', label: 'Home' },
-		{ href: '/andresen', label: 'Dr. Jeff Andresen' },
-		{ href: '/forecasts', label: 'Forecasts' },
-		{ href: '/weather', label: 'Weather Resources' },
-		{ href: '/articles', label: 'Articles' }
+		{ href: '/andresen/', label: 'Dr. Jeff Andresen' },
+		{ href: '/forecasts/', label: 'Forecasts' },
+		{ href: '/weather/', label: 'Weather Resources' },
+		{ href: '/articles/', label: 'Articles' }
 	];
 
 	function isActive(href: string): boolean {
-		if (href === '/') {
-			return page.url.pathname === '/';
-		}
-		return page.url.pathname.startsWith(href);
+		const path = `${base}${href}`;
+		if (href === '/') return page.url.pathname === path;
+		return page.url.pathname.startsWith(path);
 	}
 </script>
 
@@ -28,7 +28,7 @@
 		{#each navItems as item (item.href)}
 			<li>
 				<a
-					href={item.href}
+					href={`${base}${item.href}`}
 					class="px-3 py-1.5 rounded-md transition-colors {isActive(item.href)
 						? 'bg-emerald-50 text-msu-green border-b-2 border-msu-green font-bold'
 						: 'hover:bg-slate-100 hover:text-msu-green'}"
@@ -47,7 +47,7 @@
 		{#each navItems as item (item.href)}
 			<li>
 				<a
-					href={item.href}
+					href={`${base}${item.href}`}
 					class="rounded-md transition-colors {isActive(item.href)
 						? 'bg-emerald-50 text-msu-green font-bold'
 						: 'hover:bg-slate-100 hover:text-msu-green'}"

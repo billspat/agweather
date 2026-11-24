@@ -1,6 +1,6 @@
 <script lang="ts">
 	import heroImage from '$lib/assets/mi_cherry_orchard_andresen.JPG';
-
+	import { base } from '$app/paths';
 </script>
 
 <!-- HERO SECTION -->
@@ -22,10 +22,10 @@
 
 			<!-- disable these redunant buttons inside the hero element - already in the nav, but they are cute -->
 			<!-- <div class="flex flex-wrap gap-4">
-				<a href="/forecasts" class="btn bg-white text-msu-green hover:bg-emerald-50 hover:text-msu-dark font-bold border-none px-6 shadow">
+				<a href={`${base}/forecasts/`} class="btn bg-white text-msu-green hover:bg-emerald-50 hover:text-msu-dark font-bold border-none px-6 shadow">
 					Forecast Reports
 				</a>
-				<a href="/weather" class="btn btn-outline text-white hover:bg-white/10 border-white px-6 font-semibold">
+				<a href={`${base}/weather/`} class="btn btn-outline text-white hover:bg-white/10 border-white px-6 font-semibold">
 					Weather Guidance
 				</a>
 			</div> -->
@@ -42,7 +42,7 @@
 			</p>
 			<div class="pt-2">
 				<a
-					href="/andresen"
+					href={`${base}/andresen/`}
 					class="text-xs font-bold text-emerald-300 hover:text-white underline inline-flex items-center gap-1"
 				>
 					Learn more about Dr. Andresen &rarr;
@@ -111,7 +111,7 @@
 					</p>
 				</div>
 				<div class="card-actions justify-end mt-4">
-					<a href="/weather" class="text-xs font-bold text-msu-green hover:underline inline-flex items-center gap-1">
+					<a href={`${base}/weather/`} class="text-xs font-bold text-msu-green hover:underline inline-flex items-center gap-1">
 						View Weather Guidance &rarr;
 					</a>
 				</div>

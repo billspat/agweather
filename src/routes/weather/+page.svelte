@@ -1,3 +1,7 @@
+<script lang="ts">
+	import { base } from '$app/paths';
+</script>
+
 <div class="py-10 px-4 sm:px-8">
 	<div class="max-w-7xl mx-auto space-y-10">
 
@@ -81,7 +85,7 @@
 							Dr. Andresen issues regular seasonal and event-driven agricultural weather outlooks for Michigan growers. Reports are updated throughout the growing season.
 						</p>
 						<div class="mt-4">
-							<a href="/forecasts" class="btn btn-sm bg-msu-green text-white hover:bg-msu-dark border-none font-semibold">
+							<a href={`${base}/forecasts/`} class="btn btn-sm bg-msu-green text-white hover:bg-msu-dark border-none font-semibold">
 								View Forecast Reports &rarr;
 							</a>
 						</div>
@@ -129,7 +133,7 @@
 					<p class="text-xs text-slate-600 mb-4">
 						State Climatologist for Michigan and Professor at MSU's Department of Geography, Environment, and Spatial Sciences.
 					</p>
-					<a href="/andresen" class="btn btn-sm btn-outline border-msu-green text-msu-green hover:bg-msu-green hover:text-white w-full font-semibold">
+					<a href={`${base}/andresen/`} class="btn btn-sm btn-outline border-msu-green text-msu-green hover:bg-msu-green hover:text-white w-full font-semibold">
 						Faculty Profile &rarr;
 					</a>
 				</div>
