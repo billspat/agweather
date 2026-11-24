@@ -1,4 +1,4 @@
-export interface MawnUnits {
+export interface SixtyHrForecastUnits {
 	temperature: string;
 	wind_speed: string;
 	precipitation: string;
@@ -6,7 +6,7 @@ export interface MawnUnits {
 	cloud_cover: string;
 }
 
-export interface MawnForecastEntry {
+export interface SixtyHrForecastEntry {
 	valid_at: string;
 	temperature: number | null;
 	dew_point: number | null;
@@ -25,11 +25,11 @@ export interface MawnForecastEntry {
 	max_min_temperature_12h: number | null;
 }
 
-export interface MawnForecastResponse {
+export interface SixtyHrForecastResponse {
 	station: string;
 	initialized_at: string;
-	units: MawnUnits;
-	forecasts: MawnForecastEntry[];
+	units: SixtyHrForecastUnits;
+	forecasts: SixtyHrForecastEntry[];
 }
 
 export interface ForecastStation {
